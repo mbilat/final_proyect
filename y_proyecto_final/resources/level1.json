@@ -1,0 +1,29 @@
+{
+    "lvl_1": [
+        {
+            "player":[
+                        {
+                        "x":10,
+                        "y":524,
+                        "w":32,
+                        "h":32,
+                        "speed_walk":10,
+                        "speed_run":10,
+                        "gravity":15,
+                        "jump_power":8,
+                        "frame_rate_ms":100,
+                        "move_rate_ms":50,
+                        "jump_height":140
+                        }
+            ]
+        },
+        {
+            "nombre": "Rocket Raccoon",
+            "identidad": "Rocket Raccoon",
+            "altura": 122.77,
+            "peso": 25.73,
+            "fuerza": 5,
+            "inteligencia": "average"
+        }
+    ]
+}
