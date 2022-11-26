@@ -22,9 +22,12 @@ class Enemy():
         self.range_rect_l = pygame.Rect(self.rect.x-155,self.rect.y-15,self.rect.width+130,self.rect.height+30)
         self.shot_speed = 5
         self.lista_municion = []
+        self.shot_timer = 0
+        self.shot_interval = 20
         self.pasive = True
         self.pasive_time = 5
         self.seconds_of_life = 0
+
 
     def move(self):
 
@@ -44,18 +47,26 @@ class Enemy():
             
     def shot(self,player):
 
-        if not self.pasive:
+        if not self.pasive and self.shot_timer ==0 :
             if self.range_rect_l.colliderect(player.rect):
 
                     if len(self.lista_municion)==0:
+                        self.shot_timer = self.shot_interval
                         self.lista_municion.append(Proyectil(self.rect.x,self.rect.y,self.shot_speed,"L"))
 
             elif self.range_rect_r.colliderect(player.rect):
 
                     if len(self.lista_municion)==0:
+                        self.shot_timer = self.shot_interval
                         self.lista_municion.append(Proyectil(self.rect.x,self.rect.y,self.shot_speed,"R"))
 
+    def shot_timer_update(self):
+        if self.shot_timer>0: 
+            self.shot_timer-=1
+
     def update(self,player,lista_plataforma):
+
+        self.shot_timer_update()
 
         if self.pasive: 
             self.seconds_of_life+=1
@@ -132,5 +143,9 @@ class Runner(Enemy):
         if self.frame == len(self.animate):
             self.frame = 0
         
-
-    
+class Fly(Runner):
+    def __init__(self, x, y, speed) -> None:
+        super().__init__(x, y, speed)
+        self.walk = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Idle (40x48).png",8,1)
+        self.fall = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Fall (40x48).png",4,1)
+        self.animate = self.walk

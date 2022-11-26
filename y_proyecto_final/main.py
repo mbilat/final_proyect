@@ -19,20 +19,23 @@ clock = pygame.time.Clock()
 
 imagen_fondo = pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/clase19/CLASE_19_inicio_juego/images/locations/forest/all.png")
 imagen_fondo = pygame.transform.scale(imagen_fondo,(ANCHO_VENTANA,ALTO_VENTANA))
-player_1 = Player(x=20,y=GROUND_LEVEL,w=32,h=32,speed_walk=10,speed_run=10,jump_power=50   ,frame_rate_ms=100,move_rate_ms=50,jump_height=140)
+player_1 = Player(x=20,y=240,w=32,h=32,speed_walk=10,speed_run=10,jump_power=50   ,frame_rate_ms=100,move_rate_ms=50,jump_height=140)
 
 lista_municion = []
 
 lista_plataformas = []
-lista_plataformas.append(Plataforma(0,(250),300,60))
-lista_plataformas.append(Plataforma(300,(250),300,60))
-lista_plataformas.append(Plataforma(600,(250),300,60))
-lista_plataformas.append(Plataforma(900,(250),300,60))
-lista_plataformas.append(Plataforma(0,(400),300,60))
-lista_plataformas.append(Plataforma(300,(400),300,60))
-lista_plataformas.append(Plataforma(600,(400),300,60))
-lista_plataformas.append(Plataforma(900,(400),300,60))
-
+lista_plataformas.append(Plataforma(0,(240),300,60))
+lista_plataformas.append(Plataforma(300,(240),300,60))
+#lista_plataformas.append(Plataforma(600,(240),300,60))
+lista_plataformas.append(Plataforma(900,(240),300,60))
+lista_plataformas.append(Plataforma(0,(395),300,60))
+lista_plataformas.append(Plataforma(300,(395),300,60))
+lista_plataformas.append(Plataforma(600,(395),300,60))
+lista_plataformas.append(Plataforma(900,(395),300,60))
+lista_plataformas.append(Plataforma(0,(100),300,20))
+lista_plataformas.append(Plataforma(300,(100),300,20))
+lista_plataformas.append(Plataforma(600,(100),300,20))
+lista_plataformas.append(Plataforma(900,(100),300,20))
 
 list_bonus_spawns = [
                 {"x":30,"y":214},
@@ -41,13 +44,15 @@ lista_bonus = []
 Spawn.bonus(lista_bonus,list_bonus_spawns,len(list_bonus_spawns))
 
 list_enemy_spawns = [{"x":134,"y":366},
-                {"x":134,"y":214},
+                {"x":134,"y":204},
                 {"x":724,"y":372},
                 {"x":724 ,"y":219}]
+list_runner_spawns= 1
+
 
 list_ladder = []
-list_ladder.append(Ladder(1160,405,30,150))
-list_ladder.append(Ladder(20,245,30,150))
+list_ladder.append(Ladder(1160,402,30,140))
+list_ladder.append(Ladder(20,242,30,140))
 
 list_runner= []
 list_runner.append(Runner(826,GROUND_LEVEL,10))

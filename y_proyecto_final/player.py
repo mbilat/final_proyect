@@ -21,7 +21,7 @@ class Player:
         self.move_y = 0
         self.speed_walk = speed_walk
         self.speed_run = speed_run
-        self.gravity = GRAVITIY
+        self.gravity = GRAVITY
         self.animation = self.stay_r
         self.image = self.animation[self.frame]
         self.image = pygame.transform.scale(self.image,(w,h))
@@ -48,7 +48,9 @@ class Player:
 
         self.is_on_ladder = True
         self.is_climbing = False
-        self.climb_speed = 15
+        self.is_on_ground = True
+        self.climb_speed = 10
+        self.is_touch_bottom = True
 
         self.tiempo_transcurrido = 0
         self.tiempo_last_jump = 0 
@@ -78,10 +80,10 @@ class Player:
                 self.frame = 0
             self.l_or_r = "R"
 
-        if(keys[pygame.K_UP] and self.is_on_ladder and not keys[pygame.K_DOWN]):
+        if(keys[pygame.K_UP] and self.is_on_ladder and not keys[pygame.K_DOWN]and not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]):
             self.is_climbing = True
             self.climb_ladder("UP",ladder_list)
-        elif(not keys[pygame.K_UP] and self.is_on_ladder and keys[pygame.K_DOWN]):
+        elif(not keys[pygame.K_UP] and self.is_on_ladder and keys[pygame.K_DOWN]and not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]):
             self.is_climbing =True
             self.climb_ladder("DOWN",ladder_list)
         else:
@@ -112,7 +114,6 @@ class Player:
             for index,bullet in enumerate(self.lista_municion):
                 for enemy in list_enemy:
                     if bullet.colision(enemy.rect):
-                        print("pego")
                         self.lista_municion.pop(index)
                         enemy.is_alive = False
                         break
@@ -121,7 +122,6 @@ class Player:
             for index,bullet in enumerate(self.lista_municion):
                 for enemy in list_enemy_type_2:
                     if bullet.colision(enemy.rect):
-                        print("pego")
                         enemy.lives -=1
                         if enemy.lives == 0:
                             self.lista_municion.pop(index)
@@ -145,17 +145,37 @@ class Player:
         self.move_x = 0
         self.frame = 0        
 
-    def detect_ladder(self,list_ladder):
 
-        self.is_touch_ladder=len(list_ladder)
+    def detect_ladder(self,list_ladder):
+        
+        self.is_touch_ladders=len(list_ladder)
+        self.is_climb_ladders=len(list_ladder)
+        self.bottom_ladders=len(list_ladder)
+
         for ladder in list_ladder:
             if self.colision(ladder):
-                self.is_touch_ladder -=1
-                print("ladder")
-        if self.is_touch_ladder == len(list_ladder):
+                self.is_touch_ladders -=1
+            if self.rect_collide_foot.colliderect(ladder.rect_collide):
+                self.is_climb_ladders -=1
+            if self.rect_collide_foot.colliderect(ladder.rect_bottom):
+                self.bottom_ladders -=1
+
+        if self.is_touch_ladders == len(list_ladder):
             self.is_on_ladder = False
         else:
             self.is_on_ladder = True
+
+        if self.is_climb_ladders== len(list_ladder):
+            self.is_on_ground = True
+        else:
+            self.is_on_ground = False
+        
+        if self.bottom_ladders== len(list_ladder):
+            self.is_touch_bottom = False
+        else:
+            self.is_touch_bottom = True
+        
+
 
     def climb_ladder(self,climb_up_down,list_ladder):
 
@@ -164,16 +184,18 @@ class Player:
         if self.is_on_ladder and climb_up_down == "UP" and self.is_climbing:
             self.move_y = -self.climb_speed
         elif self.is_on_ladder and climb_up_down == "DOWN" and self.is_climbing:
-            if not self.rect.y== GROUND_LEVEL:
+            if not self.is_touch_bottom:
                 self.move_y = self.climb_speed
+            else:
+                self.move_y = 0
         elif not self.is_on_ladder:
-            print("bajaa")
             self.move_y = 0
         if self.is_climbing:
             self.gravity = 0
         else: 
-            self.gravity = GRAVITIY
+            self.gravity = GRAVITY
         self.is_on_ladder = False
+
 
     def jump(self,on_off = True):
         '''
@@ -212,28 +234,21 @@ class Player:
         if self.shot_timer>0: 
             self.shot_timer-=1
 
-    def jump_timer_update(self):
-        if (self.jump_timer> 0): 
-            self.jump_timer-= 1
-
     def do_movement(self,delta_ms,plataform_list):
 
         self.tiempo_transcurrido_move += delta_ms
 
         if(self.tiempo_transcurrido_move >= self.move_rate_ms):
-            self.tiempo_transcurrido_move = 0
+            self.tiempo_transcurrido_move = 0 
 
-            if(abs(self.y_start_jump - self.rect.y) > self.jump_height and self.is_jump):
-                self.move_y = 0       
-            self.change_x(self.move_x)
+            if self.is_on_ground:
+                self.change_x(self.move_x)
             self.change_y(self.move_y)
 
             if(not self.is_on_plataform(plataform_list)):
                 if(self.move_y == 0):
                     self.change_y(self.gravity)
-            else:
-                if (self.is_jump): 
-                    self.jump(False)
+            
      
 
     def change_x(self,delta_x):
@@ -254,12 +269,12 @@ class Player:
             for plataforma in  plataform_list:
                 if(self.rect_collide_foot.colliderect(plataforma.rect_collide)):
                     retorno = True
-                    break       
+                    break  
+
         return retorno 
 
     def update(self,delta_ms,list_enemy,list_enemy_2,list_block):
 
-        self.jump_timer_update()
         self.shot_timer_update()
         if self.lives <= 0:
             self.is_alive = False
