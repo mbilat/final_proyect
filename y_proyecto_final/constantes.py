@@ -3,5 +3,5 @@ ALTO_VENTANA = 750
 FPS = 60
 GRAVITIY= 15
 GROUND_LEVEL = 524
-DEBUG = True
+DEBUG = False
 PATH_IMAGE = "/CLASE_19_inicio_juego/images/"
