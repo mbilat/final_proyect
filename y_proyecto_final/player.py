@@ -247,10 +247,10 @@ class Player:
 
             if(not self.is_on_plataform(plataform_list)):
                 if(self.move_y == 0):
+                    self.gravity = GRAVITY
                     self.change_y(self.gravity)
             
      
-
     def change_x(self,delta_x):
         self.rect.x += delta_x
         self.rect_collide_foot.x += delta_x
@@ -299,5 +299,3 @@ class Player:
             self.image = self.animation[self.frame]
             screen.blit(self.image,self.rect)
             
-
-
