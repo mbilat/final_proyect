@@ -11,6 +11,7 @@ from spawn import *
 from menu_start import *
 from ladder import *
 from screen_items import *
+from gui import *
 
 screen = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.init()
@@ -43,11 +44,19 @@ list_bonus_spawns = [
 lista_bonus = []
 Spawn.bonus(lista_bonus,list_bonus_spawns,len(list_bonus_spawns))
 
-list_enemy_spawns = [{"x":134,"y":366},
-                {"x":134,"y":204},
-                {"x":724,"y":372},
-                {"x":724 ,"y":219}]
-list_runner_spawns= 1
+list_enemy_spawns = [{"x":134,"y":524},
+                {"x":134,"y":372},
+                {"x":454,"y":372},
+                {"x":140,"y":372},
+                {"x":1040,"y":372},
+                {"x":1020,"y":70},
+                {"x":724 ,"y":524}
+                ]
+list_runner_spawns= [
+
+    
+]
+
 
 
 list_ladder = []
@@ -77,7 +86,9 @@ pygame.mixer.music.set_volume(0.7)
 sonido_fondo = pygame.mixer.Sound("y_proyecto_final/resources/passionfruit.mp3")
 sonido_fondo.set_volume(0.9)
 
- 
+menu = GUI()
+menu.run_(screen)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -89,9 +100,8 @@ while running:
                 if seconds ==60:
                     minutes+=1
                     seconds=0
-    
-    keys = pygame.key.get_pressed()
     events = pygame.event.get()
+    keys = pygame.key.get_pressed()
 
     delta_ms = clock.tick(FPS)
 
@@ -100,13 +110,13 @@ while running:
         init_of_game.draw(ALTO_VENTANA/2,ANCHO_VENTANA/2,screen)
         init_of_game.init_game(keys)
         #sonido_fondo.play()
+
     elif pause and not init_of_game.is_starting:
         Items.draw_in_init(screen)
         #sonido_fondo.stop()
 
     elif not init_of_game.is_starting and not pause and player_1.is_alive:
 
-        
         Items.draw_on_game(screen,imagen_fondo,player_1,seconds,minutes)
 
         last_spawn += seconds
@@ -124,7 +134,7 @@ while running:
 
         for ladder in list_ladder:
             ladder.draw(screen)
-            
+           
         player_1.events(delta_ms,keys,list_ladder)
         player_1.update(delta_ms,lista_enemy,list_runner,lista_plataformas)
         player_1.draw(screen)
@@ -161,8 +171,10 @@ while running:
         screen.fill((0,0,0))
         font = font = pygame.font.SysFont("Arial Narrow", 150)
         text = font.render(("GAME OVER"), True, (255, 255, 255))
-        screen.blit(text,(280,250))
-
+        screen.blit(text,(320,ALTO_VENTANA/2))
+        
+        
+    '''
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE and not pause:
             print("in pause")
@@ -170,7 +182,7 @@ while running:
         elif event.key == pygame.K_ESCAPE and pause:
             print("NO Pause")
             pause = False     
-
+    '''
 
     pygame.display.flip()
     

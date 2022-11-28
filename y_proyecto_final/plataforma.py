@@ -8,7 +8,7 @@ class Plataforma:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y      
-        self.rect_collide = pygame.Rect(self.rect.x+5,self.rect.y-5,self.rect.width-10,self.rect.height/6)
+        self.rect_collide = pygame.Rect(self.rect.x+5,self.rect.y,self.rect.width-10,self.rect.height/5)
 
     def draw(self,screen):
         screen.blit(self.image,self.rect)

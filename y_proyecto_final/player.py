@@ -86,8 +86,10 @@ class Player:
         elif(not keys[pygame.K_UP] and self.is_on_ladder and keys[pygame.K_DOWN]and not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT]):
             self.is_climbing =True
             self.climb_ladder("DOWN",ladder_list)
+        
         else:
             self.is_climbing = False
+            self.gravity = GRAVITY
 
         if(not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT] and not keys[pygame.K_SPACE]):
             self.stay()
@@ -174,6 +176,11 @@ class Player:
             self.is_touch_bottom = False
         else:
             self.is_touch_bottom = True
+        
+        if self.is_on_ladder:
+            self.gravity = 0
+        else :
+            self.gravity = GRAVITY
         
 
 
