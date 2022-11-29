@@ -46,10 +46,6 @@ class Portal(Bonus):
         self.w = w
         self.h = h
 
-    def enter(self,player):
-        if self.rect.colliderect(player.rect):
-            return True
-
     def draw(self,screen):
         if self.on:
             if(self.frame < len(self.animation) - 1):

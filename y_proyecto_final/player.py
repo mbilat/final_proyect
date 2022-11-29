@@ -14,7 +14,7 @@ class Player:
         self.w = w
         self.h = h
         self.frame = 0
-        self.lives = 5
+        self.lives = 100
         self.is_alive = True
         self.score = 0
         self.move_x = 0

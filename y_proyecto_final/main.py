@@ -56,7 +56,6 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pause.in_pause = True
 
-    events = pygame.event.get()
     keys = pygame.key.get_pressed()
 
     delta_ms = clock.tick(FPS)
@@ -71,10 +70,11 @@ while True:
             sonido_fondo.play()
             flag_new_game = False
             last_spawn = 0
+            items = Items()
 
         if current_level.player_1.is_alive and not current_level.player_1.is_win:
 
-            Items.draw_on_game(screen,imagen_fondo,current_level.player_1,seconds,minutes)
+            items.draw_on_game(screen,imagen_fondo,current_level.player_1,seconds,minutes)
 
             last_spawn += 1
 
@@ -100,13 +100,14 @@ while True:
                     Spawn.keys(current_level.list_keys,current_level.list_keys_spawn,len(current_level.list_keys_spawn))
                 current_level.time_keys -=1
             
-            if current_level.player_1.keys >= 0:
+            if current_level.player_1.keys >= 4:
                 current_level.portal.on = True
                 current_level.portal.draw(screen)
 
             current_level.player_1.events(delta_ms,keys,current_level.ladder_list)
             current_level.player_1.update(delta_ms,current_level.list_enemy,current_level.list_runner,current_level.list_platforms)
             current_level.player_1.draw(screen)
+
             for flags in current_level.list_keys:
                 flags.is_caught(current_level.player_1)
                 flags.draw(screen)

@@ -77,7 +77,7 @@ class Enemy():
 
             if proyectil.colision(player.rect):
                 self.lista_municion.pop(index)
-                player.lives -=1
+                player.lives -=10
             elif proyectil.rect.x < 0 or proyectil.rect.x > ANCHO_VENTANA:
                 self.lista_municion.pop(index)
             else:
@@ -131,7 +131,7 @@ class Runner(Enemy):
         
         if self.rect.colliderect(player.rect):
             self.is_alive = False
-            player.lives-=1
+            player.lives-=20
 
     def update(self):
         
