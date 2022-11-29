@@ -4,7 +4,7 @@ from proyectil import *
 from auxiliar import Auxiliar
 
 class Player:
-    def __init__(self,x,y,w,h,speed_walk,speed_run,jump_power,frame_rate_ms,move_rate_ms,jump_height,interval_time_jump=100) -> None:
+    def __init__(self,x,y,w,h,speed_walk,speed_run,jump_power,frame_rate_ms,move_rate_ms,interval_time_jump=100) -> None:
         self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Run (32x32).png",12,1)
         self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Run (32x32).png",12,1,True)
         self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Idle (32x32).png",11,1)
@@ -44,7 +44,6 @@ class Player:
         self.tiempo_transcurrido_move = 0
         self.move_rate_ms = move_rate_ms
         self.y_start_jump = 0
-        self.jump_height = jump_height
 
         self.is_on_ladder = True
         self.is_climbing = False

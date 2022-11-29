@@ -4,11 +4,11 @@ from enemigo import *
 from objetos import *
 
 class Spawn:
-    def enemy(enemy_list,ubi_list,len_lista,speed=5):
+    def enemy(enemy_list,ubi_list,len_lista,enemy_type,speed=5):
         pos =random.randint(0,(len_lista-1))
         x = ubi_list[pos]["x"]
         y = ubi_list[pos]["y"]
-        enemy_list.append(Enemy(x,y,speed))
+        enemy_list.append(enemy_type(x,y,speed))
 
     def bonus(bonus_list,ubi_list,len_lista):
         pos =random.randint(0,(len_lista-1))

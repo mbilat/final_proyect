@@ -1,4 +1,5 @@
 import pygame
+import json
 
 class Auxiliar:
     @staticmethod
@@ -42,3 +43,14 @@ class Auxiliar:
             for i in range(repeat_frame):
                 lista.append(surface_fotograma)
         return lista
+
+    def cargar_json(ruta:str,lvl)->list[dict]:
+        '''
+        Extrae la información de un .json y lo devuelve como lista de diccionarios.
+        '''
+        data = []
+        with open(ruta,"r") as archivo:
+            data = json.load(archivo)
+            data = list[dict](data[lvl])
+            return data
+

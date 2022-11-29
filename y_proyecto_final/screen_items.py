@@ -14,10 +14,8 @@ class Items:
         text = font.render(("{0}:".format(minutes).zfill(2)+"{0}".format(seconds).zfill(2)), True, (255, 255, 255))
         screen.blit(text,(1150,5))
 
-    def draw_in_init(screen,):
-
-        font = pygame.font.SysFont("Times New Roman", 20)
-
+    def game_over(screen):
         screen.fill((0,0,0))
-        text = font.render("JUEGO EN PAUSA, ESC PARA REANUDAR", True, (250, 255, 250))
-        screen.blit(text,(ALTO_VENTANA/2,ANCHO_VENTANA/2))
+        font = font = pygame.font.SysFont("Arial Narrow", 150)
+        text = font.render(("GAME OVER"), True, (255, 255, 255))
+        screen.blit(text,(320,ALTO_VENTANA/2))
