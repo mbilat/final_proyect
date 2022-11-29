@@ -16,3 +16,8 @@ class Spawn:
         y = ubi_list[pos]["y"]
         bonus_list.append(Bonus(x,y,50,50))
     
+    def keys(key_list,key_ubi_list,len_lista):
+        pos =random.randint(0,(len_lista-1))
+        x = key_ubi_list[pos]["x"]
+        y = key_ubi_list[pos]["y"]
+        key_list.append(Flag(x,y,50,50))

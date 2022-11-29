@@ -3,6 +3,7 @@ from auxiliar import*
 from player import *
 from plataforma import *
 from ladder import *
+from objetos import *
 
 class Level:
    def __init__(self) -> None:
@@ -10,7 +11,8 @@ class Level:
         self.lvl = "lvl_1"
         self.is_running = True
         self.data = Auxiliar.cargar_json(self.ruta,self.lvl)
-        self.player_1 = 0
+        self.player_1 = None
+        self.time_keys = 0
         self.list_platforms = []
         self.ladder_list = []
         self.list_enemy = []
@@ -19,6 +21,10 @@ class Level:
         self.list_bonus_spawn = []
         self.list_runner = []
         self.list_runner_spawn = []
+        self.list_keys = []
+        self.list_keys_spawn = []
+        self.portal = None
+
 
    def init_level(self):        
         for i in self.data:
@@ -40,3 +46,10 @@ class Level:
             elif i["type"] == "platform_list":
                 for e in i["list_spawn"]:
                     self.list_platforms.append(Plataforma(e["x"],e["y"],e["w"],e["h"]))
+
+            elif i["type"] == "keys_spawn":
+                self.list_keys_spawn = i["list_spawn"]
+
+            elif i["type"] == "portal":
+                self.portal = Portal(i["x"],i["y"],i["w"],i["h"])
+

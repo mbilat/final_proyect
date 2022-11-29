@@ -3,7 +3,7 @@ from constantes import *
 
 class Plataforma:
     def __init__(self,x,y,w,h) -> None:
-        self.image = pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/ground.png")
+        self.image = pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/ground.png")
         self.image = pygame.transform.scale(self.image,(w,h))
         self.rect = self.image.get_rect()
         self.rect.x = x

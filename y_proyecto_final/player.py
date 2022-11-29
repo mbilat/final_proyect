@@ -5,12 +5,12 @@ from auxiliar import Auxiliar
 
 class Player:
     def __init__(self,x,y,w,h,speed_walk,speed_run,jump_power,frame_rate_ms,move_rate_ms,interval_time_jump=100) -> None:
-        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Run (32x32).png",12,1)
-        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Run (32x32).png",12,1,True)
-        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Idle (32x32).png",11,1)
-        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Idle (32x32).png",11,1,True)
-        self.jump_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Jump (32x32).png",1,1,False)
-        self.jump_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/player1/Jump (32x32).png",1,1,True)
+        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/player1/Run (32x32).png",12,1)
+        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/player1/Run (32x32).png",12,1,True)
+        self.stay_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/player1/Idle (32x32).png",11,1)
+        self.stay_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/player1/Idle (32x32).png",11,1,True)
+        self.jump_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/player1/Jump (32x32).png",1,1,False)
+        self.jump_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/player1/Jump (32x32).png",1,1,True)
         self.w = w
         self.h = h
         self.frame = 0
@@ -33,11 +33,13 @@ class Player:
         self.is_jump = False
         self.jump_timer = 0
 
+        self.keys = 0
         self.rect_collide_foot = pygame.Rect((self.rect.x+2),self.rect.y+self.rect.height-2,self.rect.width-4,self.rect.height/8)
         self.municion = 5
         self.lista_municion = []
         self.shot_timer = 0
         self.score = 0
+        self.is_win = False
 
         self.tiempo_transcurrido_animation = 0
         self.frame_rate_ms = frame_rate_ms 

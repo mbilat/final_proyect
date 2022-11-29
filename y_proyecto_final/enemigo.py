@@ -5,8 +5,8 @@ from proyectil import *
 
 class Enemy():
     def __init__(self,x,y,speed) -> None:
-        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Run (64x32).png",14,1)
-        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Run (64x32).png",14,1,True)
+        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Run (64x32).png",14,1)
+        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Run (64x32).png",14,1,True)
         self.frame = 0
         self.animate = self.walk_l
         self.image = self.animate[self.frame]
@@ -108,8 +108,8 @@ class Enemy():
 class Runner(Enemy):
     def __init__(self, x, y, speed) -> None:
         super().__init__(x, y, speed)
-        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Run (36x30).png",12,1)
-        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Run (36x30).png",12,1,True)
+        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Run (36x30).png",12,1)
+        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Run (36x30).png",12,1,True)
         self.walk = True
         self.lives = 2
     
@@ -146,6 +146,6 @@ class Runner(Enemy):
 class Fly(Runner):
     def __init__(self, x, y, speed) -> None:
         super().__init__(x, y, speed)
-        self.walk = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Idle (40x48).png",8,1)
-        self.fall = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/y_proyecto_final/resources/enemies/Fall (40x48).png",4,1)
+        self.walk = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Idle (40x48).png",8,1)
+        self.fall = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Fall (40x48).png",4,1)
         self.animate = self.walk

@@ -12,17 +12,16 @@ from ladder import *
 from screen_items import *
 from gui import *
 from constructor import *
+from objetos import *
 
 screen = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.init()
 clock = pygame.time.Clock()
 
-imagen_fondo = pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/backup/ArchivosUTN/primercuatri/clase19/CLASE_19_inicio_juego/images/locations/forest/all.png")
+imagen_fondo = pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/all.png")
 imagen_fondo = pygame.transform.scale(imagen_fondo,(ANCHO_VENTANA,ALTO_VENTANA))
 
 current_level = Level()
-
-last_spawn = 0
 
 timer = pygame.USEREVENT + 0
 pygame.time.set_timer(timer,100)
@@ -71,18 +70,23 @@ while True:
             current_level.init_level()
             sonido_fondo.play()
             flag_new_game = False
-            
-        if current_level.player_1.is_alive:
+            last_spawn = 0
+
+        if current_level.player_1.is_alive and not current_level.player_1.is_win:
+
             Items.draw_on_game(screen,imagen_fondo,current_level.player_1,seconds,minutes)
 
-            last_spawn += seconds
+            last_spawn += 1
 
             if len(current_level.list_enemy)==0:
                 Spawn.enemy(current_level.list_enemy,current_level.list_enemy_spawn,len(current_level.list_enemy_spawn),Enemy)
 
-            if len(current_level.list_enemy)<3 and last_spawn>15:
+            if len(current_level.list_enemy)<3 and last_spawn>20:
                 Spawn.enemy(current_level.list_enemy,current_level.list_enemy_spawn,len(current_level.list_enemy_spawn),Enemy)
                 last_spawn=0
+            
+            if len(current_level.list_runner)==0 and last_spawn>15:
+                Spawn.enemy(current_level.list_runner,current_level.list_runner_spawn,len(current_level.list_runner_spawn),Runner)
 
             for plataforma in current_level.list_platforms:
                 plataforma.draw(screen)
@@ -90,10 +94,22 @@ while True:
             for ladder in current_level.ladder_list:
                 ladder.draw(screen)
             
+            if len(current_level.list_keys)<4:
+                if current_level.time_keys <=0:
+                    current_level.time_keys = 50
+                    Spawn.keys(current_level.list_keys,current_level.list_keys_spawn,len(current_level.list_keys_spawn))
+                current_level.time_keys -=1
+            
+            if current_level.player_1.keys >= 0:
+                current_level.portal.on = True
+                current_level.portal.draw(screen)
+
             current_level.player_1.events(delta_ms,keys,current_level.ladder_list)
             current_level.player_1.update(delta_ms,current_level.list_enemy,current_level.list_runner,current_level.list_platforms)
             current_level.player_1.draw(screen)
-
+            for flags in current_level.list_keys:
+                flags.is_caught(current_level.player_1)
+                flags.draw(screen)
 
             for cantidad,fruta in enumerate(current_level.list_bonus):
                 fruta.draw(screen)
@@ -121,7 +137,15 @@ while True:
 
             if seconds==30 and len(current_level.list_bonus)==0:
                 Spawn.bonus(current_level.list_bonus,current_level.list_bonus_spawn,len(current_level.list_bonus_spawn))
-        else:
+        
+            if current_level.player_1.rect.colliderect(current_level.portal.rect) and current_level.portal.on:
+                current_level.player_1.score = "{0}:".format(minutes).zfill(2)+"{0}".format(seconds).zfill(2)
+                current_level.player_1.is_win = True
+
+        elif current_level.player_1.is_alive and current_level.player_1.is_win:
+            Items.end_game(screen,current_level.player_1.score)
+
+        elif not current_level.player_1.is_alive:
             Items.game_over(screen)
             sonido_fondo.stop()
 
