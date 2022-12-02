@@ -18,36 +18,25 @@ screen = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.init()
 clock = pygame.time.Clock()
 
-imagen_fondo = pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/all.png")
-imagen_fondo = pygame.transform.scale(imagen_fondo,(ANCHO_VENTANA,ALTO_VENTANA))
-
-current_level = Level()
-
-timer = pygame.USEREVENT + 0
-pygame.time.set_timer(timer,100)
-
 tick_1s = pygame.USEREVENT+0
 pygame.time.set_timer(tick_1s,1000)
 
 seconds,minutes = 0,0
 
-pygame.mixer.init()
-pygame.mixer.music.set_volume(0.7)
-sonido_fondo = pygame.mixer.Sound("y_proyecto_final/resources/passionfruit.mp3")
-sonido_fondo.set_volume(0.9)
-
 menu = InitMenu()
 menu.run_(screen)
 pause=PauseMenu()
-flag_new_game = True
+end=EndGameMenu()
+current_level = Level()
 
 while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         if event.type == tick_1s:
-            if not flag_new_game and not pause.in_pause:
+            if not current_level.new_game and not pause.in_pause:
                 seconds+=1
                 if seconds ==60:
                     minutes+=1
@@ -56,25 +45,26 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pause.in_pause = True
 
-    keys = pygame.key.get_pressed()
+    keys = pygame.key.get_pressed() 
 
     delta_ms = clock.tick(FPS)
 
     if pause.in_pause and menu.init_level:
-        pause.run_(screen)
+        pause.run_(screen,current_level.music)
         
     elif menu.init_level and not pause.in_pause:
 
-        if flag_new_game:
+        if current_level.new_game:
             current_level.init_level()
-            sonido_fondo.play()
-            flag_new_game = False
+            if current_level.music_on:
+                current_level.music.play()
+            current_level.new_game = False
             last_spawn = 0
             items = Items()
 
         if current_level.player_1.is_alive and not current_level.player_1.is_win:
 
-            items.draw_on_game(screen,imagen_fondo,current_level.player_1,seconds,minutes)
+            items.draw_on_game(screen,current_level.wallpaper,current_level.player_1,seconds,minutes)
 
             last_spawn += 1
 
@@ -88,11 +78,8 @@ while True:
             if len(current_level.list_runner)==0 and last_spawn>15:
                 Spawn.enemy(current_level.list_runner,current_level.list_runner_spawn,len(current_level.list_runner_spawn),Runner)
 
-            for plataforma in current_level.list_platforms:
-                plataforma.draw(screen)
-
-            for ladder in current_level.ladder_list:
-                ladder.draw(screen)
+            Auxiliar.list_draw(current_level.list_platforms,screen)
+            Auxiliar.list_draw(current_level.ladder_list,screen)
             
             if len(current_level.list_keys)<4:
                 if current_level.time_keys <=0:
@@ -144,11 +131,11 @@ while True:
                 current_level.player_1.is_win = True
 
         elif current_level.player_1.is_alive and current_level.player_1.is_win:
-            Items.end_game(screen,current_level.player_1.score)
+            end.run_(screen,True,current_level.player_1.score,current_level.new_game)
 
         elif not current_level.player_1.is_alive:
-            Items.game_over(screen)
-            sonido_fondo.stop()
+            end.run_(screen,False,current_level.player_1.score,current_level.new_game)
+            current_level.music.stop()
 
     pygame.display.flip()
-    
+     

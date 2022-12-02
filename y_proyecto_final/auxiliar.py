@@ -54,3 +54,7 @@ class Auxiliar:
             data = list[dict](data[lvl])
             return data
 
+
+    def list_draw(list,screen):
+        for x in list:
+            x.draw(screen)
