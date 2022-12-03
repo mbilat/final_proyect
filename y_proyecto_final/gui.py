@@ -54,7 +54,8 @@ class InitMenu:
             self.rect_2_is_select = True
             self.rect_3_is_select = False
 
-    def run_(self,screen):
+    def run_(self,screen)->str:
+        retorno = "lvl_1"
         while self.initing:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -66,8 +67,14 @@ class InitMenu:
                     if event.key == pygame.K_UP:
                         self.move_in_menu_up()
                     if event.key == pygame.K_RETURN:
+                        if self.rect_1_is_select:
+                            retorno = "lvl_1"
+                        elif self.rect_2_is_select:
+                            retorno = "lvl_2"
+                        elif self.rect_3_is_select:
+                            retorno = "lvl_1"
                         self.initing = False
-                        self.init_level = True
+                        return retorno
             self.draw(screen)
             pygame.display.flip()
         
