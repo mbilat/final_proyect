@@ -27,6 +27,11 @@ class Enemy():
         self.pasive = True
         self.pasive_time = 5
         self.seconds_of_life = 0
+        self.lives = 1
+
+        self.sound_on = True
+        self.shot_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/shot_from_enemy.mp3")
+        self.shot_on_player_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/shot_on_player.mp3")
 
 
     def move(self):
@@ -51,12 +56,16 @@ class Enemy():
             if self.range_rect_l.colliderect(player.rect):
 
                     if len(self.lista_municion)==0:
+                        if self.sound_on:
+                            self.shot_sound.play()
                         self.shot_timer = self.shot_interval
                         self.lista_municion.append(Proyectil(self.rect.x,self.rect.y,self.shot_speed,"L"))
 
             elif self.range_rect_r.colliderect(player.rect):
 
                     if len(self.lista_municion)==0:
+                        if self.sound_on:
+                            self.shot_sound.play()
                         self.shot_timer = self.shot_interval
                         self.lista_municion.append(Proyectil(self.rect.x,self.rect.y,self.shot_speed,"R"))
 
@@ -64,8 +73,8 @@ class Enemy():
         if self.shot_timer>0: 
             self.shot_timer-=1
 
-    def update(self,player,lista_plataforma):
-
+    def update(self,player,lista_plataforma,sound_on):
+        self.sound_on = sound_on
         self.shot_timer_update()
 
         if self.pasive: 
@@ -76,6 +85,8 @@ class Enemy():
         for index,proyectil in enumerate(self.lista_municion):
 
             if proyectil.colision(player.rect):
+                if self.sound_on:
+                    self.shot_on_player_sound.play()
                 self.lista_municion.pop(index)
                 player.lives -=10
             elif proyectil.rect.x < 0 or proyectil.rect.x > ANCHO_VENTANA:
@@ -130,11 +141,15 @@ class Runner(Enemy):
             self.walk = True
         
         if self.rect.colliderect(player.rect):
+            if self.sound_on:
+                self.shot_on_player_sound.play()
+            if self.is_alive:
+                player.lives-=20
             self.is_alive = False
-            player.lives-=20
 
-    def update(self):
-        
+    def update(self,sound_on):
+
+        self.sound_on = sound_on
         self.range_rect_l.x +=self.move_x
         self.range_rect_r.x +=self.move_x
         self.rect.x += self.move_x

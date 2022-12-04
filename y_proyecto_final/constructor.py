@@ -29,8 +29,10 @@ class Level:
         self.portal = None
         self.music = pygame.mixer.Sound("y_proyecto_final/resources/passionfruit.mp3")
         self.music_on = True
+        self.sound_on = True
         self.minutes = 0
         self.seconds = 0
+
 
    def init_level(self):        
         for i in self.data:

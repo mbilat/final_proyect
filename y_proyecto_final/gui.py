@@ -25,6 +25,7 @@ class InitMenu:
         self.rect_3_content = pygame.Rect(210,420,self.w-20,self.h-20)
         self.rect_3_is_select = False
 
+        self.sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/menu_sound.mp3")
 
     def move_in_menu_down(self):
         if self.rect_1_is_select:
@@ -54,7 +55,7 @@ class InitMenu:
             self.rect_2_is_select = True
             self.rect_3_is_select = False
 
-    def run_(self,screen)->str:
+    def run_(self,screen,sound_on)->str:
         retorno = "lvl_1"
         while self.initing:
             for event in pygame.event.get():
@@ -63,16 +64,23 @@ class InitMenu:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
+                        if sound_on:
+                            self.sound.play()
                         self.move_in_menu_down()
                     if event.key == pygame.K_UP:
+                        if sound_on:
+                            self.sound.play()
                         self.move_in_menu_up()
                     if event.key == pygame.K_RETURN:
+                        if sound_on:
+                            self.sound.play()
                         if self.rect_1_is_select:
                             retorno = "lvl_1"
                         elif self.rect_2_is_select:
                             retorno = "lvl_2"
                         elif self.rect_3_is_select:
                             retorno = "lvl_1"
+                        self.init_level = True
                         self.initing = False
                         return retorno
             self.draw(screen)
@@ -110,7 +118,7 @@ class PauseMenu(InitMenu):
         self.text_3 = self.font.render(("QUIT"), True, (255, 255, 255))
         self.config = ConfigMenu()
 
-    def run_(self,screen,music):
+    def run_(self,screen,music,sound_on):
         self.in_pause=True
         while self.in_pause:
             for event in pygame.event.get():
@@ -119,21 +127,29 @@ class PauseMenu(InitMenu):
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
+                        if sound_on:
+                            self.sound.play()
                         self.move_in_menu_down()
                     if event.key == pygame.K_UP:
+                        if sound_on:
+                            self.sound.play()
                         self.move_in_menu_up()
                     if event.key == pygame.K_ESCAPE:
                         self.in_pause = False
                     if event.key == pygame.K_RETURN:
+                        if sound_on:
+                            self.sound.play()
                         if self.rect_1_is_select:
                             self.in_pause = False
                         elif self.rect_2_is_select:
-                            self.config.run_(screen,music)
+                            sound_on = self.config.run_(screen,music,sound_on)
                         elif self.rect_3_is_select:
                             pygame.quit()
+                retorno = sound_on
 
             self.draw(screen)
             pygame.display.flip()
+        return retorno
 
 class ConfigMenu(InitMenu):
     def __init__(self) -> None:
@@ -153,7 +169,8 @@ class ConfigMenu(InitMenu):
 
         self.text_3 = self.font.render(("BACK"), True, (255, 255, 255))
     
-    def run_(self,screen,music):
+    def run_(self,screen,music,sound_on):
+        retorno = sound_on
         self.in_config =True
         while self.in_config :
             for event in pygame.event.get():
@@ -162,19 +179,27 @@ class ConfigMenu(InitMenu):
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
+                        if sound_on:
+                            self.sound.play()
                         self.move_in_menu_down()
                     if event.key == pygame.K_UP:
+                        if sound_on:
+                            self.sound.play()
                         self.move_in_menu_up()
-
                     if event.key == pygame.K_ESCAPE:
                         self.in_pause = False
                     if event.key == pygame.K_RETURN:
+                        if sound_on:
+                            self.sound.play()
                         if self.rect_1_is_select:
                             if self.color_1 == self.color_red:
                                 self.color_1= self.color_green
+                                sound_on = True
+                                retorno = True
                             else:
                                 self.color_1=self.color_red
-
+                                sound_on = False
+                                retorno = False
                         elif self.rect_2_is_select:
                             if self.color_2 == self.color_red:
                                 self.color_2= self.color_green
@@ -184,23 +209,29 @@ class ConfigMenu(InitMenu):
                                 music.stop()
                         elif self.rect_3_is_select:
                             self.in_config = False
+                            
                     if event.key == pygame.K_LEFT and self.rect_2_is_select:
+                        if sound_on:
+                            self.sound.play()
                         if self.color_2 == self.color_green and not self.w_2<=0:
                                 self.w_2 -= 68
                                 self.rect_2_content = pygame.Rect(210,250,self.w_2,self.h-20)
                                 self.volume-=0.1
                                 music.set_volume(self.volume)
 
-                    if event.key == pygame.K_RIGHT and self.rect_2_is_select:            
-                            if self.color_2 == self.color_green and not self.w_2>=680:
-                                self.w_2 += 68
-                                self.rect_2_content = pygame.Rect(210,250,self.w_2,self.h-20)
-                                self.volume+=0.1
-                                music.set_volume(self.volume)
+                    if event.key == pygame.K_RIGHT and self.rect_2_is_select:
+                        if sound_on:
+                            self.sound.play()            
+                        if self.color_2 == self.color_green and not self.w_2>=680:
+                            self.w_2 += 68
+                            self.rect_2_content = pygame.Rect(210,250,self.w_2,self.h-20)
+                            self.volume+=0.1
+                            music.set_volume(self.volume)
 
             self.draw(screen)
             pygame.display.flip()
-    
+        return retorno
+        
     def draw(self,screen):
         screen.fill((0,0,0))
         if self.rect_1_is_select and not self.rect_2_is_select and not self.rect_3_is_select:
@@ -234,9 +265,7 @@ class EndGameMenu(InitMenu):
         self.text_2 = self.font.render(("SCORE LIST"), True, (255, 255, 255))
         self.text_3 = self.font.render(("QUIT"), True, (255, 255, 255))
 
-        #SEGUIR->
-
-    def run_(self,screen,win,points,new_game):
+    def run_(self,screen,win,points,new_game,sound_on):
 
         if win:
             self.is_win = True
@@ -254,10 +283,16 @@ class EndGameMenu(InitMenu):
                 else :
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_DOWN:
+                            if sound_on:
+                                self.sound.play()
                             self.move_in_menu_down()
                         if event.key == pygame.K_UP:
+                            if sound_on:
+                                self.sound.play()
                             self.move_in_menu_up()
                         if event.key == pygame.K_RETURN:
+                            if sound_on:
+                                self.sound.play()
                             self.initing = False
                             self.init_level = True
                         if event.key == pygame.K_RETURN:

@@ -16,6 +16,7 @@ class Player:
         self.frame = 0
         self.lives = 100
         self.is_alive = True
+        self.not_alive_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/portal.mp3")
         self.score = 0
         self.move_x = 0
         self.move_y = 0
@@ -29,6 +30,9 @@ class Player:
         self.rect.x = x
         self.rect.y = y
         self.l_or_r = "R"
+
+        self.sound_on = True
+
         self.jump_power = jump_power
         self.is_jump = False
         self.jump_timer = 0
@@ -37,6 +41,8 @@ class Player:
         self.rect_collide_foot = pygame.Rect((self.rect.x+2),self.rect.y+self.rect.height-2,self.rect.width-4,self.rect.height/8)
         self.municion = 5
         self.lista_municion = []
+        self.shot_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/shot_from_player.mp3")
+        self.shot_in_enemy_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/shot_on_enemy.mp3")
         self.shot_timer = 0
         self.score = 0
         self.is_win = False
@@ -62,10 +68,11 @@ class Player:
             return True
 
 
-    def events(self,delta_ms,keys,ladder_list):
+    def events(self,delta_ms,keys,ladder_list,sound_on):
 
         self.tiempo_transcurrido += delta_ms
         self.detect_ladder(ladder_list)
+        self.sound_on = sound_on
 
         if(keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]):
             self.move_x = -self.speed_walk
@@ -107,27 +114,23 @@ class Player:
         if(keys[pygame.K_x]) and self.shot_timer==0:
             self.shot_timer = 20
             if self.municion>0:
-                self.lista_municion.append(Proyectil((self.rect.x+30),(self.rect.y+16),5,self.l_or_r))
+                if self.sound_on:
+                    self.shot_sound.play()
+                self.lista_municion.append(Proyectil((self.rect.x+30),(self.rect.y+16),4,self.l_or_r))
                 self.municion-=1
                 print(self.rect.x,self.rect.y)
 
-    def municion_update(self,list_enemy,list_enemy_type_2,list_block):
+    def municion_update(self,list_enemy,list_block):
 
         if len(self.lista_municion)>0:
             for index,bullet in enumerate(self.lista_municion):
                 for enemy in list_enemy:
                     if bullet.colision(enemy.rect):
-                        self.lista_municion.pop(index)
-                        enemy.is_alive = False
-                        break
-
-        if len(self.lista_municion)>0:
-            for index,bullet in enumerate(self.lista_municion):
-                for enemy in list_enemy_type_2:
-                    if bullet.colision(enemy.rect):
+                        if self.sound_on:
+                            self.shot_in_enemy_sound.play()
                         enemy.lives -=1
+                        self.lista_municion.pop(index)
                         if enemy.lives == 0:
-                            self.lista_municion.pop(index)
                             enemy.is_alive = False
                             break
 
@@ -285,6 +288,8 @@ class Player:
 
         self.shot_timer_update()
         if self.lives <= 0:
+            if self.sound_on:
+                self.not_alive_sound.play()
             self.is_alive = False
 
         if(self.frame < len(self.animation) - 1):
@@ -294,7 +299,8 @@ class Player:
             if(self.is_jump == True):
                 self.is_jump = False
 
-        self.municion_update(list_enemy,list_enemy_2,list_block)
+        self.municion_update(list_enemy,list_block)
+        self.municion_update(list_enemy_2,list_block)
         self.do_movement(delta_ms,list_block)
         
     

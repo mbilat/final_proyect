@@ -10,6 +10,7 @@ class Bonus:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y      
+        self.sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/bonus_taken.mp3")
 
     def draw(self,screen):
         
@@ -27,9 +28,12 @@ class Flag(Bonus):
         self.caught = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/Checkpoint (No Flag).png",1,1)
         self.animation = self.idle
         self.is_taken = False
+        self.take_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/flag_catch.mp3")
     
-    def is_caught(self,player):
+    def is_caught(self,player,sound_on):
         if not self.is_taken and self.rect.colliderect(player.rect):
+            if sound_on:
+                self.take_sound.play()
             self.is_taken = True
             player.keys +=1
 
@@ -45,6 +49,16 @@ class Portal(Bonus):
         self.on = False
         self.w = w
         self.h = h
+        self.sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/portal.mp3")
+
+    def activate_draw(self,player,screen,sound_on):
+                
+        if player.keys >= 4:
+            if not self.on:
+                if sound_on:
+                    self.sound.play()
+                self.on = True
+            self.draw(screen)
 
     def draw(self,screen):
         if self.on:

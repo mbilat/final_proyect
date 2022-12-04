@@ -23,14 +23,23 @@ pygame.time.set_timer(tick_1s,1000)
 
 seconds,minutes = 0,0
 
-menu = InitMenu()
-menu.run_(screen)
-pause=PauseMenu()
-end=EndGameMenu()
-current_level = Level()
+#menu = InitMenu()
+#menu.run_(screen,True)
+#pause=PauseMenu()
+#end=EndGameMenu()
+#current_level = Level()
 
+init_game = True
 while True:
-    
+
+    if init_game:
+        menu = InitMenu()
+        menu.run_(screen,True)
+        pause=PauseMenu()
+        end=EndGameMenu()
+        current_level = Level()
+        init_game = False
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -50,7 +59,7 @@ while True:
     delta_ms = clock.tick(FPS)
 
     if pause.in_pause and menu.init_level:
-        pause.run_(screen,current_level.music)
+        current_level.sound_on = pause.run_(screen,current_level.music,current_level.sound_on)
         
     elif menu.init_level and not pause.in_pause:
 
@@ -86,22 +95,22 @@ while True:
                     current_level.time_keys = 50
                     Spawn.keys(current_level.list_keys,current_level.list_keys_spawn,len(current_level.list_keys_spawn))
                 current_level.time_keys -=1
-            
-            if current_level.player_1.keys >= 4:
-                current_level.portal.on = True
-                current_level.portal.draw(screen)
 
-            current_level.player_1.events(delta_ms,keys,current_level.ladder_list)
+            current_level.portal.activate_draw(current_level.player_1,screen,current_level.sound_on)
+
+            current_level.player_1.events(delta_ms,keys,current_level.ladder_list,current_level.sound_on)
             current_level.player_1.update(delta_ms,current_level.list_enemy,current_level.list_runner,current_level.list_platforms)
             current_level.player_1.draw(screen)
 
             for flags in current_level.list_keys:
-                flags.is_caught(current_level.player_1)
+                flags.is_caught(current_level.player_1,current_level.sound_on)
                 flags.draw(screen)
 
             for cantidad,fruta in enumerate(current_level.list_bonus):
                 fruta.draw(screen)
                 if current_level.player_1.colision(fruta.rect):
+                    if current_level.sound_on:
+                        fruta.sound.play()
                     current_level.player_1.municion += 10
                     current_level.list_bonus.pop(cantidad)
 
@@ -109,7 +118,7 @@ while True:
                 if enemigo.is_alive:
                     enemigo.shot(current_level.player_1)
                     enemigo.move()
-                    enemigo.update(current_level.player_1,current_level.list_platforms)
+                    enemigo.update(current_level.player_1,current_level.list_platforms,current_level.sound_on)
                     enemigo.draw(screen)  
                 else:
                     current_level.list_enemy.pop(indices)
@@ -118,7 +127,7 @@ while True:
                 if runner.is_alive:
                     runner.move()
                     runner.pursuit(current_level.player_1)
-                    runner.update()
+                    runner.update(current_level.sound_on)
                     runner.draw(screen)
                 else:
                     current_level.list_runner.pop(index)
@@ -131,11 +140,11 @@ while True:
                 current_level.player_1.is_win = True
 
         elif current_level.player_1.is_alive and current_level.player_1.is_win:
-            end.run_(screen,True,current_level.player_1.score,current_level.new_game)
+            end.run_(screen,True,current_level.player_1.score,current_level.new_game,current_level.sound_on)
 
         elif not current_level.player_1.is_alive:
-            end.run_(screen,False,current_level.player_1.score,current_level.new_game)
             current_level.music.stop()
+            end.run_(screen,False,current_level.player_1.score,current_level.new_game,current_level.sound_on)
 
     pygame.display.flip()
      
