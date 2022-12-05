@@ -20,7 +20,7 @@ class Enemy():
         self.start_x = self.rect.x
         self.range_rect_r = pygame.Rect(self.rect.x+20,self.rect.y-15,self.rect.width+130,self.rect.height+30)
         self.range_rect_l = pygame.Rect(self.rect.x-155,self.rect.y-15,self.rect.width+130,self.rect.height+30)
-        self.shot_speed = 5
+        self.shot_speed = 12
         self.lista_municion = []
         self.shot_timer = 0
         self.shot_interval = 20

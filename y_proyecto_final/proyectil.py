@@ -17,9 +17,9 @@ class Proyectil:
     def update(self):
 
         if self.direccion == "L":
-            self.move_x += -self.speed
+            self.move_x = -self.speed
         else:
-            self.move_x += self.speed
+            self.move_x = self.speed
         self.rect.x += self.move_x
 
     def colision(self,objeto)->bool:

@@ -1,5 +1,6 @@
 import pygame
 import json
+import sqlite3
 
 class Auxiliar:
     @staticmethod
@@ -58,3 +59,44 @@ class Auxiliar:
     def list_draw(list,screen):
         for x in list:
             x.draw(screen)
+
+    def upload_sql():
+        with sqlite3.connect("y_proyecto_final/scores.db") as conexion:
+            try:
+                sentencia = ''' create table scores
+                                (
+                                        id integer primary key autoincrement,
+                                        player text,
+                                        score real
+                                )
+                            '''
+                conexion.execute(sentencia)
+                print("Se creo la tabla de puntuación.")                       
+            except sqlite3.OperationalError:
+                print("La tabla de puntuación ya existe")  
+
+
+    def edit_sql(player):
+        with sqlite3.connect("y_proyecto_final/scores.db") as conexion:
+            try:
+                conexion.execute("insert into scores(player,score) values (?,?)", player)
+                conexion.commit()
+            except:
+                print("Error")
+
+    def get_scores_sql()->list:
+        top_three = []
+        with sqlite3.connect("y_proyecto_final/scores.db") as conexion:
+            cursor = conexion.execute("select player,score from scores order by score limit 5")
+            for fila in cursor:
+                name = fila[0]
+                score = fila[1]
+                top_three.append(name)
+                top_three.append(score)
+        return top_three
+'''
+Auxiliar.upload_sql()
+Auxiliar.edit_sql(("SIMUR",0.58))
+Auxiliar.edit_sql(("SIMUR",1.28))
+Auxiliar.edit_sql(("SIMUR",2.55))
+'''

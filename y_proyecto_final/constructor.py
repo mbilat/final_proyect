@@ -6,11 +6,10 @@ from ladder import *
 from objetos import *
 
 class Level:
-   def __init__(self) -> None:
+   def __init__(self,level) -> None:
         self.ruta = "y_proyecto_final/resources/level1.json"
-        self.lvl = "lvl_1"
-        self.wallpaper =  pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/all.png")
-        self.wallpaper = pygame.transform.scale(self.wallpaper,(ANCHO_VENTANA,ALTO_VENTANA))
+        self.lvl = level
+        self.wallpaper = None
         self.new_game = True
         self.is_running = True
         self.data = Auxiliar.cargar_json(self.ruta,self.lvl)
@@ -27,6 +26,7 @@ class Level:
         self.list_keys = []
         self.list_keys_spawn = []
         self.portal = None
+        self.last_spawn = 0
         self.music = pygame.mixer.Sound("y_proyecto_final/resources/passionfruit.mp3")
         self.music_on = True
         self.sound_on = True
@@ -66,7 +66,9 @@ class Level:
                     self.music_on = True
                 else: 
                     self.music_on = False
-                  
+            elif i["type"] == "wallpaper":
+                    self.wallpaper =  pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/all_{0}.png".format(i["num"]))
+                    self.wallpaper = pygame.transform.scale(self.wallpaper,(ANCHO_VENTANA,ALTO_VENTANA))
             pygame.mixer.init()
             pygame.mixer.music.set_volume(1.0)
 

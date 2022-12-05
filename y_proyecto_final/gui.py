@@ -1,6 +1,7 @@
 import pygame
 import sys
 from constantes import *
+from auxiliar import *
 
 class InitMenu:
     def __init__(self) -> None:
@@ -15,12 +16,12 @@ class InitMenu:
         self.rect_1_content = pygame.Rect(210,80,self.w-20,self.h-20)
         self.rect_1_is_select = True
 
-        self.text_2 = self.font.render(("LEVEL 1"), True, (255, 255, 255))
+        self.text_2 = self.font.render(("LEVEL 2"), True, (255, 255, 255))
         self.rect_2 = pygame.Rect(200,240,self.w,self.h)
         self.rect_2_content = pygame.Rect(210,250,self.w-20,self.h-20)
         self.rect_2_is_select = False
 
-        self.text_3 = self.font.render(("LEVEL 1"), True, (255, 255, 255))
+        self.text_3 = self.font.render(("LEVEL 3"), True, (255, 255, 255))
         self.rect_3 = pygame.Rect(200,410,self.w,self.h)
         self.rect_3_content = pygame.Rect(210,420,self.w-20,self.h-20)
         self.rect_3_is_select = False
@@ -79,12 +80,13 @@ class InitMenu:
                         elif self.rect_2_is_select:
                             retorno = "lvl_2"
                         elif self.rect_3_is_select:
-                            retorno = "lvl_1"
+                            retorno = "lvl_3"
                         self.init_level = True
                         self.initing = False
-                        return retorno
+                        
             self.draw(screen)
             pygame.display.flip()
+        return retorno
         
 
     def draw(self,screen):
@@ -261,26 +263,31 @@ class EndGameMenu(InitMenu):
         self.in_end_screen = False
         self.is_lose = False
         self.is_win = False
+        self.win_tuple = ("",0.0)
         self.text_1 = self.font.render(("PLAY AGAIN"), True, (255, 255, 255))
         self.text_2 = self.font.render(("SCORE LIST"), True, (255, 255, 255))
         self.text_3 = self.font.render(("QUIT"), True, (255, 255, 255))
 
-    def run_(self,screen,win,points,new_game,sound_on):
-
+    def run_(self,screen,win,points,sound_on):
+        new_game = False
+        self.is_lose = True
         if win:
             self.is_win = True
+            self.is_lose = False
+            winner = EnterScore(points)
         self.in_end_screen = True
         self.is_ending = True
+
         while self.is_ending:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if self.in_end_screen:
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            self.in_end_screen= False
-                else :
+                if self.in_end_screen and self.is_win:
+                    self.win_tuple,self.in_end_screen = winner.run_(screen,sound_on)
+                    Auxiliar.upload_sql()
+                    Auxiliar.edit_sql(self.win_tuple)
+                elif not self.in_end_screen:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_DOWN:
                             if sound_on:
@@ -298,24 +305,86 @@ class EndGameMenu(InitMenu):
                         if event.key == pygame.K_RETURN:
                             if self.rect_1_is_select:
                                 new_game = True
+                                self.is_ending = False
                             elif self.rect_2_is_select:
-                                pass
+                                top_three = []
+                                top_three = Auxiliar.get_scores_sql()
+                                scores= HighScore(top_three)
+                                scores.run_(screen,sound_on)
                             elif self.rect_3_is_select:
                                 pygame.quit()
+                else:
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RETURN:
+                            self.in_end_screen = False
             self.draw(screen,points)
             pygame.display.flip()
-    
+        return new_game
+
     def draw(self,screen,points):
+
         if self.in_end_screen:
-            font = font = pygame.font.SysFont("Arial Narrow", 80)
+            font  = pygame.font.SysFont("Arial Narrow", 80)
             screen.fill((0,0,0))
-            if self.is_win:   
-                text = font.render("YOU WIN! - Your time : {0}".format(points), True, (255, 255, 255))
-                screen.blit(text,(100,200))
-            else:
+            if self.is_win:
+                text = font.render("YOU WIN! Insert your name!",True,(255,255,255))
+                screen.blit(text,(220,300))
+                text = font.render("Your time : {0}".format(points), True, (255, 255, 255))
+                screen.blit(text,(400,400))
+            elif self.is_lose:
                 text = font.render(("GAME OVER :("), True, (255, 255, 255))
-                screen.blit(text,(200,200))
-            text = font.render(("Press SPACE to continue."), True, (255, 255, 255))
-            screen.blit(text,(200,400))
+                screen.blit(text,(400,200))
+            font  = pygame.font.SysFont("Arial Narrow", 50)
+            text = font.render(("Press ENTER to continue."), True, (255, 255, 255))
+            screen.blit(text,(400,500))
         else:
             return super().draw(screen)
+
+class EnterScore():
+    def __init__(self,score) -> None:
+        self.rect_text = pygame.Rect(250,70,700,150)
+        self.player_name = ""
+        self.score = float(score)
+        self.is_enter = False
+        self.sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/menu_sound.mp3")
+        self.sound_on = True
+
+    def run_(self,screen,sound_on):
+        self.sound_on = sound_on
+        self.is_enter = True
+
+        while self.is_enter:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if len(self.player_name)>=0 and len(self.player_name)<6 :
+                        if sound_on:
+                            self.sound.play()
+                        if event.key == pygame.K_BACKSPACE:
+                            self.player_name = self.player_name[:-1]
+                        else:
+                            if not len(self.player_name) == 5 and str(event.unicode).isalpha():
+                                self.player_name += event.unicode
+                        if event.key == pygame.K_RETURN:
+                            self.is_enter= False
+                        self.player_name = self.player_name.upper()
+                        if not self.is_enter:    
+                            return (self.player_name,self.score),False
+
+            self.draw(screen)
+            pygame.display.flip()  
+
+    def draw(self,screen):
+        pygame.draw.rect(screen,color=(255,255,255),rect=self.rect_text)
+        font  = pygame.font.SysFont("Arial Narrow", 180)
+        text = font.render(("{0}".format(self.player_name)), True, (0,0,0))
+        screen.blit(text,(390,90))
+
+class HighScore(InitMenu): 
+    def __init__(self,list_top) -> None:
+        super().__init__()
+        self.text_1 = self.font.render("1° {0} - {1}".format(str(list_top[0]),str(list_top[1])).zfill(4),True,(255,255,255))
+        self.text_2 = self.font.render("2° {0} - {1}".format(str(list_top[2]),str(list_top[3])).zfill(4),True,(255,255,255))
+        self.text_3 = self.font.render("3° {0} - {1}".format(str(list_top[4]),str(list_top[5])).zfill(4),True,(255,255,255))

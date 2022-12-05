@@ -116,7 +116,7 @@ class Player:
             if self.municion>0:
                 if self.sound_on:
                     self.shot_sound.play()
-                self.lista_municion.append(Proyectil((self.rect.x+30),(self.rect.y+16),4,self.l_or_r))
+                self.lista_municion.append(Proyectil((self.rect.x+30),(self.rect.y+16),12,self.l_or_r))
                 self.municion-=1
                 print(self.rect.x,self.rect.y)
 
@@ -263,8 +263,11 @@ class Player:
             
      
     def change_x(self,delta_x):
-        self.rect.x += delta_x
-        self.rect_collide_foot.x += delta_x
+        proof_x = self.rect.x
+        proof_x += delta_x
+        if proof_x > 5 and proof_x < (ANCHO_VENTANA-5):
+            self.rect.x += delta_x
+            self.rect_collide_foot.x += delta_x
 
     def change_y(self,delta_y):
         self.rect.y += delta_y
