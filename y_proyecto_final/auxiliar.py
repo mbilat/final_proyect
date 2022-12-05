@@ -87,7 +87,7 @@ class Auxiliar:
     def get_scores_sql()->list:
         top_three = []
         with sqlite3.connect("y_proyecto_final/scores.db") as conexion:
-            cursor = conexion.execute("select player,score from scores order by score limit 5")
+            cursor = conexion.execute("select player,score from scores order by score limit 3")
             for fila in cursor:
                 name = fila[0]
                 score = fila[1]

@@ -6,8 +6,6 @@ from gui import *
 from constructor import *
 from changes_in_game import *
 
-#AGREGAR ANIMACION DE MUERTE EN ENEMIGOS - AGREGAR SALTO - Y PANTALLA ANTES DE ELEGIR NIVEL
-
 screen = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.init()
 clock = pygame.time.Clock()

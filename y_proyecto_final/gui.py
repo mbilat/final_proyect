@@ -25,7 +25,7 @@ class InitMenu:
         self.rect_3 = pygame.Rect(200,410,self.w,self.h)
         self.rect_3_content = pygame.Rect(210,420,self.w-20,self.h-20)
         self.rect_3_is_select = False
-
+        
         self.sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/menu_sound.mp3")
 
     def move_in_menu_down(self):
@@ -90,6 +90,8 @@ class InitMenu:
         
 
     def draw(self,screen):
+
+
         screen.fill((0,0,0))
         if self.rect_1_is_select and not self.rect_2_is_select and not self.rect_3_is_select:
             y_selected = 60
