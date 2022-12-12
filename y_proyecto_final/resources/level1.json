@@ -7,10 +7,8 @@
             "h":32,
             "speed_walk":10,
             "speed_run":10,
-            "jump_power":8,
             "frame_rate_ms":100,
-            "move_rate_ms":50,
-            "jump_height":140
+            "move_rate_ms":50
 
         },
         {
@@ -87,10 +85,8 @@
             "h":32,
             "speed_walk":10,
             "speed_run":10,
-            "jump_power":8,
             "frame_rate_ms":100,
-            "move_rate_ms":50,
-            "jump_height":140
+            "move_rate_ms":50
 
         },
         {
@@ -169,10 +165,8 @@
             "h":32,
             "speed_walk":10,
             "speed_run":10,
-            "jump_power":8,
             "frame_rate_ms":100,
-            "move_rate_ms":50,
-            "jump_height":140
+            "move_rate_ms":50
 
         },
         {

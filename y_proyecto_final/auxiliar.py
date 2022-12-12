@@ -47,7 +47,7 @@ class Auxiliar:
 
     def cargar_json(ruta:str,lvl)->list[dict]:
         '''
-        Extrae la información de un .json y lo devuelve como lista de diccionarios.
+        Extracts the information from a .json and returns it as a list of dictionaries.
         '''
         data = []
         with open(ruta,"r") as archivo:
@@ -57,11 +57,18 @@ class Auxiliar:
 
 
     def list_draw(list,screen):
+        '''
+        Loops through a list of objects and draws them on the screen.
+        '''
         for x in list:
             x.draw(screen)
 
     def upload_sql():
-        with sqlite3.connect("y_proyecto_final/scores.db") as conexion:
+        '''
+        Create a sql file with a scoreboard.
+        '''
+
+        with sqlite3.connect("scores.db") as conexion:
             try:
                 sentencia = ''' create table scores
                                 (
@@ -71,13 +78,16 @@ class Auxiliar:
                                 )
                             '''
                 conexion.execute(sentencia)
-                print("Se creo la tabla de puntuación.")                       
+                print("the scoreboard list was created.")                       
             except sqlite3.OperationalError:
-                print("La tabla de puntuación ya existe")  
+                print("The scoreboard already exists.")  
 
 
     def edit_sql(player):
-        with sqlite3.connect("y_proyecto_final/scores.db") as conexion:
+        '''
+        Inserts a new entry in the file, if it is not possible returns "error" by console.
+        '''
+        with sqlite3.connect("scores.db") as conexion:
             try:
                 conexion.execute("insert into scores(player,score) values (?,?)", player)
                 conexion.commit()
@@ -85,8 +95,12 @@ class Auxiliar:
                 print("Error")
 
     def get_scores_sql()->list:
+        '''
+        Extracts the 3 best scores from the file and return a list with these.
+        '''
+
         top_three = []
-        with sqlite3.connect("y_proyecto_final/scores.db") as conexion:
+        with sqlite3.connect("scores.db") as conexion:
             cursor = conexion.execute("select player,score from scores order by score limit 3")
             for fila in cursor:
                 name = fila[0]
@@ -94,9 +108,3 @@ class Auxiliar:
                 top_three.append(name)
                 top_three.append(score)
         return top_three
-'''
-Auxiliar.upload_sql()
-Auxiliar.edit_sql(("SIMUR",0.58))
-Auxiliar.edit_sql(("SIMUR",1.28))
-Auxiliar.edit_sql(("SIMUR",2.55))
-'''

@@ -7,7 +7,7 @@ from objetos import *
 
 class Level:
    def __init__(self,level) -> None:
-        self.ruta = "y_proyecto_final/resources/level1.json"
+        self.ruta = "resources/level1.json"
         self.lvl = level
         self.wallpaper = None
         self.new_game = True
@@ -27,17 +27,21 @@ class Level:
         self.list_keys_spawn = []
         self.portal = None
         self.last_spawn = 0
-        self.music = pygame.mixer.Sound("y_proyecto_final/resources/passionfruit.mp3")
+        self.music = pygame.mixer.Sound("resources/passionfruit.mp3")
         self.music_on = True
         self.sound_on = True
         self.minutes = 0
         self.seconds = 0
 
 
-   def init_level(self):        
+   def init_level(self):   
+        '''
+        Creates the objects as extracted from the json file.
+        '''
+
         for i in self.data:
             if i["type"] == "player":
-                self.player_1 = Player(i["x"],i["y"],i["w"],i["h"],i["speed_walk"],i["speed_run"],i["jump_power"],i["frame_rate_ms"],i["move_rate_ms"])
+                self.player_1 = Player(i["x"],i["y"],i["w"],i["h"],i["speed_walk"],i["speed_run"],i["frame_rate_ms"],i["move_rate_ms"])
             elif i["type"] == "runner_spawn":
                 self.list_runner_spawn = i["list_spawn"]
             

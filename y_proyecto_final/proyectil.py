@@ -1,7 +1,5 @@
 import pygame
 
-
-
 class Proyectil:
     def __init__(self,x,y,speed,direccion) -> None:
         self.image = pygame.image.load("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/player1/Spiked Ball.png")

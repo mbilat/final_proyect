@@ -30,12 +30,14 @@ class Enemy():
         self.lives = 1
 
         self.sound_on = True
-        self.shot_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/shot_from_enemy.mp3")
-        self.shot_on_player_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/shot_on_player.mp3")
+        self.shot_sound = pygame.mixer.Sound("resources/sounds/shot_from_enemy.mp3")
+        self.shot_on_player_sound = pygame.mixer.Sound("resources/sounds/shot_on_player.mp3")
 
 
     def move(self):
-
+        '''
+        The enemy moves in one direction until it reaches a range in which it changes direction.
+        '''
         if self.l_o_r == "L":
             self.move_x = -self.speed
             self.animate = self.walk_l
@@ -51,6 +53,9 @@ class Enemy():
                 self.frame = 0
             
     def shot(self,player):
+        '''
+        If the range rectangle collides with the player, the enemy fires in the player's direction.
+        '''
 
         if not self.pasive and self.shot_timer ==0 :
             if self.range_rect_l.colliderect(player.rect):
@@ -70,6 +75,9 @@ class Enemy():
                         self.lista_municion.append(Proyectil(self.rect.x,self.rect.y,self.shot_speed,"R"))
 
     def shot_timer_update(self):
+        '''
+        Shot cooldown timer.
+        '''
         if self.shot_timer>0: 
             self.shot_timer-=1
 
@@ -106,6 +114,9 @@ class Enemy():
             self.frame = 0
         
     def draw(self,screen):
+        '''
+        Draw the character, his shots on the screen if he is alive. if debug is true it also draws its collision rectangles.
+        '''
         if(DEBUG):
             pygame.draw.rect(screen,color=(255,0 ,0),rect=self.range_rect_r)
             pygame.draw.rect(screen,color=(0,250 ,0),rect=self.range_rect_l)
@@ -129,6 +140,9 @@ class Runner(Enemy):
             return super().move()
 
     def pursuit(self,player):
+        '''
+        If the range rectangle collides with the player, the enemy's direction changes to the player's direction.
+        '''
 
         if self.range_rect_l.colliderect(player.rect):
             self.move_x = -self.speed
@@ -158,9 +172,3 @@ class Runner(Enemy):
         if self.frame == len(self.animate):
             self.frame = 0
         
-class Fly(Runner):
-    def __init__(self, x, y, speed) -> None:
-        super().__init__(x, y, speed)
-        self.walk = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Idle (40x48).png",8,1)
-        self.fall = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/enemies/Fall (40x48).png",4,1)
-        self.animate = self.walk

@@ -6,7 +6,10 @@ from auxiliar import *
 
 class Changes:
     def draws_and_updates(screen,current_level,items,delta_ms,keys):
-        
+        '''
+        Passes parameters to functions while running the level, updating and drawing everything on the screen.
+        '''
+
         items.draw_on_game(screen,current_level.wallpaper,current_level.player_1,current_level.seconds,current_level.minutes)
         current_level.last_spawn += 1
 

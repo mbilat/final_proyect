@@ -10,10 +10,12 @@ class Bonus:
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y      
-        self.sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/bonus_taken.mp3")
+        self.sound = pygame.mixer.Sound("resources/sounds/bonus_taken.mp3")
 
     def draw(self,screen):
-        
+        '''
+        Draw the object depending on its animation. Change the frame of the animation.
+        '''
         if(self.frame < len(self.animation) - 1):
             self.frame += 1 
         else:
@@ -28,9 +30,13 @@ class Flag(Bonus):
         self.caught = Auxiliar.getSurfaceFromSpriteSheet("C:/Users/bilix/OneDrive/Escritorio/final_proyect/y_proyecto_final/resources/Checkpoint (No Flag).png",1,1)
         self.animation = self.idle
         self.is_taken = False
-        self.take_sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/flag_catch.mp3")
+        self.take_sound = pygame.mixer.Sound("resources/sounds/flag_catch.mp3")
     
     def is_caught(self,player,sound_on):
+        '''
+        If is_taken is False and the character collides with the object is_taken becomes True. Add a key to the player.
+        Play a sound if sound is on.
+        '''
         if not self.is_taken and self.rect.colliderect(player.rect):
             if sound_on:
                 self.take_sound.play()
@@ -38,6 +44,9 @@ class Flag(Bonus):
             player.keys +=1
 
     def draw(self, screen):
+        '''
+        Draw the object depending on its animation.
+        '''
         if self.is_taken:
             self.animation = self.caught
         return super().draw(screen)
@@ -49,10 +58,12 @@ class Portal(Bonus):
         self.on = False
         self.w = w
         self.h = h
-        self.sound = pygame.mixer.Sound("y_proyecto_final/resources/sounds/portal.mp3")
+        self.sound = pygame.mixer.Sound("resources/sounds/portal.mp3")
 
     def activate_draw(self,player,screen,sound_on):
-                
+        '''
+        If the player meets the requirements, draw the portal.
+        '''
         if player.keys >= 4:
             if not self.on:
                 if sound_on:
@@ -61,6 +72,9 @@ class Portal(Bonus):
             self.draw(screen)
 
     def draw(self,screen):
+        '''
+        Draw the object depending on its animation. Change the frame of the animation.
+        '''
         if self.on:
             if(self.frame < len(self.animation) - 1):
                 self.frame += 1 
