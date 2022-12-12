@@ -56,6 +56,7 @@ while True:
             Changes.draws_and_updates(screen,current_level,items,delta_ms,keys)
             
         elif current_level.player_1.is_alive and current_level.player_1.is_win:
+            current_level.music.stop()
             init_game = end.run_(screen,True,current_level.player_1.score,current_level.sound_on)
 
         elif not current_level.player_1.is_alive:

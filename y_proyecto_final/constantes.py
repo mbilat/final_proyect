@@ -4,4 +4,4 @@ FPS = 60
 GRAVITY= 15
 GROUND_LEVEL = 524
 DEBUG = False
-PATH_IMAGE = "/CLASE_19_inicio_juego/images/"
+PATH_IMAGE = ""
