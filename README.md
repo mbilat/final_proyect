@@ -5,6 +5,10 @@
 
 
 
+#### *Gameplay:*
+
+* [YouTube](https://www.youtube.com/watch?v=2UBIxTz1Xyk)
+
 # **About the proyect**
 
 "Y" is a 2D game slightly inspired by Donkey Kong mobility with its stairs. The visual section belongs to Pixel Adventure momentarily until I can change them for images of my authorship.
@@ -12,22 +16,22 @@ From the menu to the gameplay is handled only with the keyboard. The game has ra
 The idea of the gameplay is to collect the flags to activate the portal with which you win when you reach it. For this you will have to eliminate the enemies, but it is possible but difficult to win in peaceful mode.
 Winning in the shortest possible time is what will take you to the ranking of the game.
 
-# **Setup:**
+# **Setup**
 
 To play it is necessary to have Visual Studio Code (last version), anaconda3. Links below.
 
 * [VisualStudioCode](https://code.visualstudio.com/)
 * [anaconda3](https://www.anaconda.com/products/distribution)
 
-In visual studio code it is necessary to install python and the pygame library. In the terminal type ` pip install pygame` .
+In Visual Studio Code it is necessary to install python and the pygame library. In the terminal type ` pip install pygame` .
 
 Clone with gitbash or download the files from my repository.
 It is necessary to change the path of some files to make it work correctly.
 
-In the file enemigo.py lines 8, 9 ,133 & 134 it is necessary to change the string *"C:/Users/bilix/OneDrive/Escritorio/"* for the path where you have downloaded the project.
+In the file enemigo.py lines 8, 9 ,133 & 134 you must change the string *"C:/Users/bilix/OneDrive/Escritorio/"* for the path where you have downloaded the project.
 
 
-### **Example:**
+### **Example**
 
 From this...
 
@@ -50,7 +54,7 @@ Line 8, 9, 10 & 11 of player.py
 Line 5 of proyectil.py
 
 
-## **Controls:**
+## **Controls**
 * In Menu:
 	* ⇅ to move in the menu.
 	* ⇄ to decrease and increase the volume in settings.
@@ -61,7 +65,9 @@ Line 5 of proyectil.py
 	* ⇅ to climb ladders.
 	* "X" to shoot.
 
-# **About me:**
+#### Version 1.0.0
+
+# **About me**
 
 Hello, my name is Matias Bilat, I am a young programmer from Argentina and I started this project for my studies, although I want to continue developing this game to get the best out of it and myself.
 
